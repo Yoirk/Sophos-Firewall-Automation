@@ -1,0 +1,23 @@
+---
+- name: Sophos Firewall Automated Remediation
+  hosts: sophos_firewalls
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    - secrets.yml
+
+  tasks:
+    - name: Run Remediation Script
+      command: >
+        python3 main_remediate.py
+        --ip {{ ansible_host }}
+        --port {{ sophos_port }}
+        --user {{ sophos_user }}
+        --password {{ sophos_password }}
+        --backup-pass "{{ backup_enc_pass }}"
+      register: remediate_output
+
+    - name: Display Result
+      debug:
+        msg: "{{ remediate_output.stdout_lines }}"

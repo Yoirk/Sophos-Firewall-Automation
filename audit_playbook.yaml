@@ -1,0 +1,29 @@
+---
+- name: Sophos Firewall Automated Audit
+  hosts: sophos_firewalls
+  connection: local       # Chạy script tại máy local
+  gather_facts: no        # Không cần lấy thông tin OS của Firewall
+
+  tasks:
+    - name: Create reports directory
+      file:
+        path: "./reports"
+        state: directory
+
+    - name: Run Audit Script
+      command: >
+        python3 main_audit.py
+        --ip {{ ansible_host }}
+        --port {{ sophos_port }}
+        --user {{ sophos_user }}
+        --password {{ sophos_password }}
+      register: audit_output
+
+    - name: Display Result
+      debug:
+        msg: "{{ audit_output.stdout_lines }}"
+
+    - name: Save Report
+      copy:
+        content: "{{ audit_output.stdout }}"
+        dest: "./reports/audit_{{ inventory_hostname }}.txt"

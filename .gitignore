@@ -1,0 +1,18 @@
+# 1. Thư mục dữ liệu nhạy cảm
+reports/
+backups/
+
+# 2. File chứa mật khẩu & key bảo mật
+.env
+secrets.yml
+inventory.ini
+
+# 3. File tạm của Python (Rác)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 4. File cấu hình của editor (nếu có)
+.vscode/
+.idea/
